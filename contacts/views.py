@@ -46,3 +46,12 @@ def delete_contact(request, pk):
 
     return render(request, "contacts/delete_contact.html",
                   {"contact": contact})
+
+
+def show_contact(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+    form = ContactForm(data=request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect(to='list_contacts')
+    return render(request, "contacts/show_contact.html", {"contact": contact, "pk": pk, "form": form})
