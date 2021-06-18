@@ -1,9 +1,17 @@
 from django.db import models
+from django.db.models.base import ModelBase
+from django.forms import ModelForm
 from django.core.validators import RegexValidator
 from localflavor.us.models import USStateField, USZipCodeField
 
 
 class Contact(models.Model):
+    note = models.ForeignKey(
+        'note',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     phone_regex = RegexValidator(
         regex=r'^\+?\d{10}$',
         message="Phone number must be entered in the format: '+9999999999'.")
@@ -20,3 +28,5 @@ class Contact(models.Model):
     city = models.CharField(max_length=255, null=True, blank=True)
     state = USStateField(null=True, blank=True)
     zip_code = USZipCodeField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
